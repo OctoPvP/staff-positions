@@ -14,7 +14,7 @@ const ViewPositionPage = (
     props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) => {
     return (
-        <>
+        <div className={"pt-20"}>
             <div className={"border-b-2 pb-4 border-gray-500"}>
                 <h1 className={"text-4xl font-bold text-center"}>{props.data.title}</h1>
                 <p className={"text-2xl text-gray-400 text-center pt-4"}>{props.data.shortDescription}</p>
@@ -26,7 +26,7 @@ const ViewPositionPage = (
                     </CardBody>
                 </Card>
                 <div className={"flex"}>
-                    <aside className="h-screen sticky top-16">
+                    <aside className="h-screen sticky top-8">
                         <Card className="col-span-1 m-6 md:ml-3 h-fit">
                             <CardBody>
                                 <h1 className="text-2xl font-bold text-center">Apply</h1>
@@ -45,7 +45,7 @@ const ViewPositionPage = (
                     </aside>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

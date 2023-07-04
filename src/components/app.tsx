@@ -36,7 +36,7 @@ export const AppWrapper = ({children, title}: AppWrapperProps) => {
     const router = useRouter();
     return (
         <>
-            <NextUINavbar maxWidth="xl" position="sticky">
+            <NextUINavbar maxWidth="xl" shouldHideOnScroll>
                 <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
                     <NavbarBrand className="gap-3 max-w-fit">
                         <NextLink className="flex justify-start items-center gap-1" href="/#home" scroll={false}>
