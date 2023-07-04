@@ -15,6 +15,7 @@ import Logo from "@public/logo.svg";
 import clsx from "clsx";
 import {link as linkStyles} from "@nextui-org/theme";
 import Image from "next/image";
+import {useSession} from "next-auth/react";
 
 interface AppWrapperProps {
     children: React.ReactNode[] | React.ReactNode | null | undefined;
@@ -32,8 +33,19 @@ const navItems = [
         href: "/#positions",
     }
 ]
+const adminNavItems = [
+    {
+        label: "Admin",
+        href: "/admin",
+    },
+    {
+        label: "Logout",
+        href: "/auth/signout",
+    }
+]
 export const AppWrapper = ({children, title}: AppWrapperProps) => {
     const router = useRouter();
+    const session = useSession();
     return (
         <>
             <NextUINavbar maxWidth="xl" shouldHideOnScroll>
@@ -71,7 +83,25 @@ export const AppWrapper = ({children, title}: AppWrapperProps) => {
                                 </NavbarItem>
                             )
                         })}
-                    </div>
+                        {session.status === "authenticated" && adminNavItems.map((item, index) => {
+                            return (
+                                <NavbarItem key={item.href} isActive={/*isActive || */false}>
+                                    <NextLink
+                                        className={clsx(
+                                            linkStyles({color: /*isActive*/ false ? "primary" : "foreground"}),
+                                            "data-[active=true]:text-primary data-[active=true]:font-medium"
+                                        )}
+                                        color="foreground"
+                                        href={item.href}
+                                        scroll={false}
+                                        id={"nav-link-" + item.label.toLowerCase()}
+                                    >
+                                        {item.label}
+                                    </NextLink>
+                                </NavbarItem>
+                            )
+                        })}
+                        </div>
                     <NavbarMenuToggle className="sm:hidden"/>
                 </NavbarContent>
                 <NavbarMenu>
@@ -83,6 +113,23 @@ export const AppWrapper = ({children, title}: AppWrapperProps) => {
                                     (item.href !== "/" && router.asPath.startsWith(item.href))) ||
                                 (item.alias && router.asPath === item.alias);
                              */
+                            return (
+                                <NavbarMenuItem key={`${item}-${index}`}>
+                                    <Link
+                                        color={
+                                            /*isActive*/ false
+                                                ? "primary"
+                                                : "foreground"
+                                        }
+                                        href={item.href}
+                                        size="lg"
+                                    >
+                                        {item.label}
+                                    </Link>
+                                </NavbarMenuItem>
+                            )
+                        })}
+                        {session.status === "authenticated" && adminNavItems.map((item, index) => {
                             return (
                                 <NavbarMenuItem key={`${item}-${index}`}>
                                     <Link

@@ -7,11 +7,18 @@ export function nextAuth(
     res: NextApiResponse | null
 ) {
     const options: AuthOptions = {
+        pages: {
+            signIn: "/auth/signin",
+        },
         providers: [
             AuthentikProvider({
                 clientId: process.env.AUTHENTIK_CLIENT_ID || "",
                 clientSecret: process.env.AUTHENTIK_CLIENT_SECRET || "",
                 issuer: process.env.AUTHENTIK_ISSUER,
+                client: {
+                    authorization_signed_response_alg: 'HS256',
+                    id_token_signed_response_alg: 'HS256'
+                }
             })
         ],
         session: {
