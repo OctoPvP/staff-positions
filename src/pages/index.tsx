@@ -9,7 +9,7 @@ export default function Home() {
         <>
             <section id={"home"}>
                 <div className={"flex h-screen justify-center items-center flex-col"}>
-                    <h1 className={"text-7xl font-bold"}>Staff Positions</h1>
+                    <h1 className={"md:text-7xl text-5xl font-bold"}>Staff Positions</h1>
                     <Button className={"mt-4"} color={"primary"} onPress={() => {
                         // click the id nav-link-positions
                         document.getElementById("nav-link-positions")?.click();
@@ -22,12 +22,14 @@ export default function Home() {
             <section id={"positions"} className={
                 "flex flex-col justify-center items-center min-h-screen bg-background"
             }>
-                <h2 className={"text-6xl font-bold pb-8"}>Available Positions</h2>
-                <Position
-                    title={"Developer"}
-                    description={"Developers are responsible for creating and maintaining the server's plugins and website."}
-                    id={"developer"}
-                />
+                <h2 className={"md:text-6xl text-4xl font-bold pb-8"}>Available Positions</h2>
+                <div className={"mx-4"}>
+                    <Position
+                        title={"Developer"}
+                        description={"Developers are responsible for creating and maintaining the server's plugins and website."}
+                        id={"developer"}
+                    />
+                </div>
             </section>
         </>
     )

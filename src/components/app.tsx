@@ -91,7 +91,7 @@ export const AppWrapper = ({children, title}: AppWrapperProps) => {
                                                 ? "primary"
                                                 : "foreground"
                                         }
-                                        href="#"
+                                        href={item.href}
                                         size="lg"
                                     >
                                         {item.label}

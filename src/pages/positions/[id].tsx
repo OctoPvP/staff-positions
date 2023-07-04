@@ -19,29 +19,31 @@ const ViewPositionPage = (
                 <h1 className={"text-4xl font-bold text-center"}>{props.data.title}</h1>
                 <p className={"text-2xl text-gray-400 text-center pt-4"}>{props.data.shortDescription}</p>
             </div>
-            <div className={"flex flex-row"}>
-                <Card className={"w-5/6 ml-6 mt-6 mr-3"}>
-                    <CardBody className={""}>
+            <div className="grid grid-cols-1 md:grid-cols-4">
+                <Card className="col-span-3 m-6 md:mr-3 sm:mb-3">
+                    <CardBody>
                         <MDXRemote {...props.serializedDesc} components={mdxComponents}/>
                     </CardBody>
                 </Card>
-                <Card className={"w-1/6 mr-6 mt-6 ml-3 h-fit"}>
-                    <CardBody>
-                        <h1 className={"text-2xl font-bold text-center"}>
-                            Apply
-                        </h1>
-                        <p className={"text-center text-gray-400 py-6"}>
-                            Ready to apply? Click the button below to get started.
-                        </p>
-                        <div className={"flex flex-col w-full text-center"}>
-                            <Link href={props.data.link}>
-                                <Button color={"primary"} className={"w-full mx-4"}>
-                                    Apply <FaArrowRight />
-                                </Button>
-                            </Link>
-                        </div>
-                    </CardBody>
-                </Card>
+                <div className={"flex"}>
+                    <aside className="h-screen sticky top-16">
+                        <Card className="col-span-1 m-6 md:ml-3 h-fit">
+                            <CardBody>
+                                <h1 className="text-2xl font-bold text-center">Apply</h1>
+                                <p className="text-center text-gray-400 py-6">
+                                    Ready to apply? Click the button below to get started.
+                                </p>
+                                <div className="flex flex-col w-full text-center">
+                                    <Link href={props.data.link}>
+                                        <Button color="primary" className="w-full mx-4">
+                                            Apply <FaArrowRight/>
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </CardBody>
+                        </Card>
+                    </aside>
+                </div>
             </div>
         </>
     );
