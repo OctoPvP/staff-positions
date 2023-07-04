@@ -24,11 +24,11 @@ const Position = (props: PositionProps) => {
             </CardBody>
             <Divider/>
             <CardFooter>
-                <div className={"flex flex-col w-full text-center"}>
+                <div className={"flex flex-col w-full px-4"}>
                     <NextLink
                         href={"/positions/" + encodeURIComponent(props.id.toLowerCase())}
                     >
-                        <Button color={"primary"}>
+                        <Button color={"primary"} className={"w-full"}>
                             Read More <FaArrowRight />
                         </Button>
                     </NextLink>
