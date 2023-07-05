@@ -1,5 +1,5 @@
 import prisma from "@/prisma/prisma";
-import {Position} from "@prisma/client";
+import {Prisma} from "@prisma/client";
 
 export const getAllPositions = async () => {
     return prisma.position.findMany({});
@@ -7,17 +7,42 @@ export const getAllPositions = async () => {
 export const getPositionByIdentifier = async (identifier: string) => {
     return prisma.position.findUnique({
         where: {
-            identifier
+            identifier,
         }
     });
 }
+
 export const getAllListedPositions = async () => {
     return prisma.position.findMany({
-        where: {unlisted: false}
+        where: {unlisted: false, hidden: false}
     });
 }
-export const createPosition = async (data: Position) => {
+export const createPosition = async (data: (Prisma.Without<Prisma.PositionCreateInput, Prisma.PositionUncheckedCreateInput> & Prisma.PositionUncheckedCreateInput) | (Prisma.Without<Prisma.PositionUncheckedCreateInput, Prisma.PositionCreateInput> & Prisma.PositionCreateInput)) => {
     return prisma.position.create({
         data
+    });
+}
+export const getAllPositionsWithoutDescription = async () => {
+    // get all but remove description to save bandwidth
+    return prisma.position.findMany({})
+        .then(positions => positions.map(position => {
+            position.description = "";
+            return position;
+        }));
+}
+
+export const setField = async (id: string, data: any) => {
+    return prisma.position.update({
+        where: {
+            identifier: id.toLowerCase()
+        },
+        data
+    });
+}
+export const removePosition = async (id: string) => {
+    return prisma.position.delete({
+        where: {
+            identifier: id.toLowerCase()
+        }
     });
 }

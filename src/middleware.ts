@@ -14,7 +14,7 @@ export default async function middleware(
     req: NextRequest
 ) {
     const { pathname } = req.nextUrl;
-    const isAPIRequest = req.method === "POST" || req.url.startsWith("/api/");
+    const isAPIRequest = req.method === "POST" || pathname.startsWith("/api/");
     // if (debug) debugLog("Pathname", pathname);
     const match = compiledProtectedRoutes.find((route) => {
         return route.regex.test(pathname);

@@ -1,5 +1,8 @@
 [
   {
     "path": "/admin/*"
+  },
+  {
+    "path": "/api/admin/*"
   }
 ]

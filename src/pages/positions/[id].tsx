@@ -6,7 +6,7 @@ import {serialize} from "next-mdx-remote/serialize";
 import {MDXRemote} from "next-mdx-remote";
 import mdxComponents from "@/util/markdown";
 import remarkGfm from "remark-gfm";
-import {Card, CardBody, CardHeader} from "@nextui-org/card";
+import {Card, CardBody} from "@nextui-org/card";
 import {Button, Link} from "@nextui-org/react";
 import {FaArrowRight} from "react-icons/fa6";
 
@@ -19,22 +19,22 @@ const ViewPositionPage = (
                 <h1 className={"text-4xl font-bold text-center"}>{props.data.title}</h1>
                 <p className={"text-2xl text-gray-400 text-center pt-4"}>{props.data.shortDescription}</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-4">
-                <Card className="col-span-3 m-6 md:mr-3 sm:mb-3">
+            <div className="grid grid-cols-1 md:grid-cols-4 pl-12">
+                <Card className="col-span-3 m-6 md:mr-3 sm:mb-3 h-fit">
                     <CardBody>
                         <MDXRemote {...props.serializedDesc} components={mdxComponents}/>
                     </CardBody>
                 </Card>
                 <div className={"flex"}>
                     <aside className="h-screen sticky top-8">
-                        <Card className="col-span-1 m-6 md:ml-3 h-fit">
+                        <Card className="col-span-1 w-full m-6 md:ml-3 h-fit">
                             <CardBody>
                                 <h1 className="text-2xl font-bold text-center">Apply</h1>
                                 <p className="text-center text-gray-400 py-6">
                                     Ready to apply? Click the button below to get started.
                                 </p>
                                 <div className="flex flex-col w-full text-center">
-                                    <Link href={props.data.link}>
+                                    <Link href={props.data.link} className={"outline-0"}>
                                         <Button color="primary" className="w-full mx-4">
                                             Apply <FaArrowRight/>
                                         </Button>
@@ -54,7 +54,7 @@ export default ViewPositionPage;
 export async function getServerSideProps(context: GetServerSidePropsContext) {
     const {id} = context.query;
     const data = await getPositionByIdentifier(id as string);
-    if (!data) {
+    if (!data || data.hidden) {
         return {
             notFound: true,
         };

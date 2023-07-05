@@ -12,7 +12,7 @@ interface PositionProps {
 }
 const Position = (props: PositionProps) => {
     return (
-        <Card className="max-w-[400px]">
+        <Card className="w-[400px]">
             <CardHeader className="flex gap-3">
                 <div className="flex flex-col w-full">
                     <p className="text-2xl font-bold text-center">{props.title}</p>
@@ -27,6 +27,7 @@ const Position = (props: PositionProps) => {
                 <div className={"flex flex-col w-full px-4"}>
                     <NextLink
                         href={"/positions/" + encodeURIComponent(props.id.toLowerCase())}
+                        className={"outline-0"}
                     >
                         <Button color={"primary"} className={"w-full"}>
                             Read More <FaArrowRight />

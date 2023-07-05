@@ -7,6 +7,9 @@ import Script from "next/script";
 import Head from "next/head";
 import {Session} from "next-auth";
 import {SessionProvider} from "next-auth/react";
+import {SWRConfig} from "swr";
+import {fetcher} from "@/util/swr";
+import {DynamicModalProvider} from "@/components/dynamic-modal";
 
 export type AppPropsWithSession = AppProps & {
     pageProps: {
@@ -26,11 +29,18 @@ export default function App({Component, pageProps}: AppPropsWithSession) {
             <Script src={"/assets/js/clarity.js"}/>
             <NextUIProvider>
                 <NextThemesProvider attribute={"class"} defaultTheme={"dark"}>
-                    <SessionProvider session={pageProps.session}>
-                        <AppWrapper>
-                            <Component {...pageProps} />
-                        </AppWrapper>
-                    </SessionProvider>
+                    <SWRConfig value={{
+                        fetcher,
+                        refreshInterval: 10000,
+                    }}>
+                        <DynamicModalProvider>
+                            <SessionProvider session={pageProps.session}>
+                                <AppWrapper>
+                                    <Component {...pageProps} />
+                                </AppWrapper>
+                            </SessionProvider>
+                        </DynamicModalProvider>
+                    </SWRConfig>
                 </NextThemesProvider>
             </NextUIProvider>
         </>

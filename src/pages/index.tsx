@@ -1,9 +1,13 @@
-import {Button} from "@nextui-org/react";
+import {Button, Spinner} from "@nextui-org/react";
 import {FaArrowDown} from "react-icons/fa6";
 import {useRouter} from "next/router";
 import Position from "@/components/position";
+import useSWR from "swr";
+import {GetServerSidePropsContext} from "next";
+import ClientSide from "@/components/client-side";
 
 export default function Home() {
+    const {data, error, isLoading} = useSWR('/api/positions/')
     const router = useRouter();
     return (
         <>
@@ -24,11 +28,14 @@ export default function Home() {
             }>
                 <h2 className={"md:text-6xl text-4xl font-bold pb-8"}>Available Positions</h2>
                 <div className={"mx-4"}>
-                    <Position
-                        title={"Developer"}
-                        description={"Developers are responsible for creating and maintaining the server's plugins and website."}
-                        id={"developer"}
-                    />
+                    {isLoading && <ClientSide><Spinner /></ClientSide>}
+                    {error && <b>Failed to load positions.</b>}
+                    {!data || data.length === 0 && !isLoading && !error && <b>No available positions :(</b>}
+                    {data && data.length > 0 && data.map((position: any) => {
+                        return (
+                            <Position key={position.id} title={position.title} id={position.identifier} description={position.shortDescription} />
+                        )
+                    })}
                 </div>
             </section>
         </>
