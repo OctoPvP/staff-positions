@@ -27,7 +27,7 @@ export default function Home() {
                 "flex flex-col justify-center items-center min-h-screen bg-background"
             }>
                 <h2 className={"md:text-6xl text-4xl font-bold pb-8"}>Available Positions</h2>
-                <div className={"mx-4"}>
+                <div className={"mx-4 w-full md:w-fit"}>
                     {isLoading && <ClientSide><Spinner /></ClientSide>}
                     {error && <b>Failed to load positions.</b>}
                     {!data || data.length === 0 && !isLoading && !error && <b>No available positions :(</b>}

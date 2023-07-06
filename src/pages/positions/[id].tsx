@@ -19,15 +19,19 @@ const ViewPositionPage = (
                 <h1 className={"text-4xl font-bold text-center"}>{props.data.title}</h1>
                 <p className={"text-2xl text-gray-400 text-center pt-4"}>{props.data.shortDescription}</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-4 pl-12">
+            <div className="grid grid-cols-1 md:grid-cols-4 md:pl-12">
                 <Card className="col-span-3 m-6 md:mr-3 sm:mb-3 h-fit">
                     <CardBody>
-                        <MDXRemote {...props.serializedDesc} components={mdxComponents}/>
+                        {props.serializedDesc ? (<MDXRemote {...props.serializedDesc} components={mdxComponents}/>) : (
+                            <p className="text-center text-gray-400 py-6">
+                                Error rendering markdown.
+                            </p>
+                        )}
                     </CardBody>
                 </Card>
-                <div className={"flex"}>
-                    <aside className="h-screen sticky top-8">
-                        <Card className="col-span-1 w-full m-6 md:ml-3 h-fit">
+                <div className={"flex w-full"}>
+                    <aside className="h-screen sticky top-8 w-full">
+                        <Card className="col-span-1 w-fit m-6 md:ml-3 h-fit">
                             <CardBody>
                                 <h1 className="text-2xl font-bold text-center">Apply</h1>
                                 <p className="text-center text-gray-400 py-6">
@@ -59,11 +63,17 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
             notFound: true,
         };
     }
-    const serializedDesc = await serialize(data.description, {
-        mdxOptions: {
-            rehypePlugins: [remarkGfm],
-        },
-    });
+    let serializedDesc;
+    try {
+        serializedDesc = await serialize(data.description, {
+            mdxOptions: {
+                rehypePlugins: [remarkGfm],
+            },
+        });
+    } catch (e) {
+        console.error(e);
+        serializedDesc = null;
+    }
     return {
         props: {
             data,
