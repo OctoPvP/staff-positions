@@ -60,9 +60,7 @@ const CustomButton = ({ modalOnError = true, showSuccessColor = true, ...props }
                                 const originalColor = props.color;
                                 setBtnColor("success");
                                 setSuccessAnimation(true)
-                                console.log("success animation")
                                 setTimeout(() => {
-                                    console.log("success animation timeout")
                                     setBtnColor(originalColor);
                                     setSuccessAnimation(false);
                                     if (props.closeModal) {

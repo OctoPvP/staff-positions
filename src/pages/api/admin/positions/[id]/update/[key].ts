@@ -7,7 +7,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!ensureType(id, "string", res)) return;
     const fieldName = req.query.key as string;
     const value = req.body[fieldName];
-    console.log(fieldName, value);
     await setField(id as string, {
         [fieldName]: value
     });
