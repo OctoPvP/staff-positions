@@ -26,16 +26,17 @@ const EditPositionPage = (
             <Card className="col-span-2 m-6 md:mr-3 sm:mb-3 h-fit">
                 <CardBody>
                     <h1 className="text-2xl font-bold text-center pb-2">{title}</h1>
-                    <Input type={inputType} label={title} placeholder={(position as any)[fieldName]} defaultValue={(position as any)[fieldName]} ref={inputRef}/>
+                    <Input type={inputType} label={title} placeholder={(position as any)[fieldName]} defaultValue={(position as any)[fieldName].toString()} ref={inputRef}/>
                     <CustomButton color={"primary"} className={"w-full mt-4"} onClickLoading={() => {
-                        const newField = inputRef.current?.value;
+                        let newField: any = inputRef.current?.value;
+                        if (inputType === "number") {
+                            newField = parseInt(newField);
+                        }
                         return axios.post(`/api/admin/positions/${position.identifier}/update/${fieldName}`, {
                             [fieldName]: newField,
                         }).then(() => {
                             if (callback) {
-                                console.log("callback");
                                 callback(newField);
-                                console.log("callback1");
                             }
                         });
                     }}>Save</CustomButton>
@@ -64,6 +65,7 @@ const EditPositionPage = (
                 <SettingCard title={"Title"} position={position} fieldName={"title"} />
                 <SettingCard title={"Short Description"} position={position} fieldName={"shortDescription"} />
                 <SettingCard title={"Link"} position={position} fieldName={"link"} inputType={"url"} />
+                <SettingCard title={"Order Priority"} position={position} fieldName={"priority"} inputType={"number"} />
                 <Card className="col-span-2 m-6 md:mr-3 sm:mb-3 h-fit">
                     <CardBody>
                         <h1 className="text-2xl font-bold text-center pb-2">{unlisted ? "Unlisted" : "Listed"}</h1>

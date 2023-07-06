@@ -15,6 +15,7 @@ model Position {
   link             String
   shortDescription String
   title            String
+  priority         Int @default(0)
   unlisted         Boolean @default(false)
   hidden           Boolean @default(false)
   createdAt        DateTime @default(now())

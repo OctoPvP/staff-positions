@@ -95,12 +95,13 @@ const AdminPage = (
                                 });
                             }}
                     ><FaPlus /> Create</Button>
-                    <Table>
+                    <Table aria-label={"List of positions"}>
                         <TableHeader>
                             <TableColumn>Identifier</TableColumn>
                             <TableColumn>Title</TableColumn>
                             <TableColumn>Created</TableColumn>
                             <TableColumn>Last Modified</TableColumn>
+                            <TableColumn>Priority</TableColumn>
                             <TableColumn>Unlisted</TableColumn>
                             <TableColumn>Hidden</TableColumn>
                             <TableColumn>Actions</TableColumn>
@@ -113,6 +114,7 @@ const AdminPage = (
                                         <TableCell>{position.title}</TableCell>
                                         <TableCell>{new Date(position.createdAt).toLocaleString()}</TableCell>
                                         <TableCell>{new Date(position.updatedAt).toLocaleString()}</TableCell>
+                                        <TableCell>{position.priority}</TableCell>
                                         <TableCell>{position.unlisted ? "Yes" : "No"}</TableCell>
                                         <TableCell>{position.hidden ? "Yes" : "No"}</TableCell>
                                         <TableCell>
