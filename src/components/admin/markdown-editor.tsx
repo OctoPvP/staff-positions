@@ -4,14 +4,16 @@ import "react-markdown-editor-lite/lib/index.css";
 
 import { evaluate } from "@mdx-js/mdx";
 import { MDXProvider, useMDXComponents } from "@mdx-js/react";
-import dynamic from "next/dynamic";
 import * as runtime from "react/jsx-runtime";
 import remarkGfm from "remark-gfm";
 import mdxComponents from "@/util/markdown";
+import MdEditor from 'react-markdown-editor-lite';
 
+/*
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
     ssr: false,
 });
+ */
 
 interface MarkdownEditorProps {
     value: string;
