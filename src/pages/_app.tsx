@@ -10,6 +10,7 @@ import {SessionProvider} from "next-auth/react";
 import {SWRConfig} from "swr";
 import {fetcher} from "@/util/swr";
 import {DynamicModalProvider} from "@/components/dynamic-modal";
+import { Analytics } from '@vercel/analytics/react';
 
 export type AppPropsWithSession = AppProps & {
     pageProps: {
@@ -37,6 +38,7 @@ export default function App({Component, pageProps}: AppPropsWithSession) {
                             <SessionProvider session={pageProps.session}>
                                 <AppWrapper>
                                     <Component {...pageProps} />
+                                    <Analytics />
                                 </AppWrapper>
                             </SessionProvider>
                         </DynamicModalProvider>
