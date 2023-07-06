@@ -12,7 +12,7 @@ interface PositionProps {
 }
 const Position = (props: PositionProps) => {
     return (
-        <Card className="w-[400px]">
+        <Card className="w-[400px] mt-4">
             <CardHeader className="flex gap-3">
                 <div className="flex flex-col w-full">
                     <p className="text-2xl font-bold text-center">{props.title}</p>
