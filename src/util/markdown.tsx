@@ -22,7 +22,7 @@ const mdxComponents: MDXComponents | MergeComponents = {
     ul: (props) => {
         return (
             <ul
-                className={"list-disc list-inside"}
+                className={"bullet-points"}
                 style={{ paddingLeft: "1.5rem" }}
                 {...props}
             />
