@@ -15,7 +15,7 @@ const ViewPositionPage = (
 ) => {
     return (
         <div className={"pt-20"}>
-            <div className={"border-b-2 pb-4 border-gray-500"}>
+            <div className={false ? "border-b-2 pb-4 border-gray-500" : "pb-4"}>
                 <h1 className={"text-4xl font-bold text-center"}>{props.data.title}</h1>
                 <p className={"text-2xl text-gray-400 text-center pt-4"}>{props.data.shortDescription}</p>
             </div>
