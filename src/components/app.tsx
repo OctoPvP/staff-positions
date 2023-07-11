@@ -43,9 +43,22 @@ const adminNavItems = [
         href: "/auth/signout",
     }
 ]
+export const DisableNav = () => {
+    return null;
+}
 export const AppWrapper = ({children, title}: AppWrapperProps) => {
     const router = useRouter();
     const session = useSession();
+    const disabledPaths = [/^\/apply\/.*/g];
+    const shouldRenderNavbar = !disabledPaths.some((path) => path.test(router.asPath));
+    // TODO: Use a hook or something to toggle the nav instead
+    if (!shouldRenderNavbar) {
+        return (
+            <>
+                {children}
+            </>
+        );
+    }
     return (
         <>
             <NextUINavbar maxWidth="xl" shouldHideOnScroll>

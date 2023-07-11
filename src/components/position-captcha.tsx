@@ -7,11 +7,11 @@ import {useRouter} from "next/router";
 
 type PositionCaptchaProps = {
     data: Position;
+    callback?: (link: string, embed: boolean) => void;
 }
-const PositionCaptcha = ({data}: PositionCaptchaProps) => {
+const PositionCaptcha = ({data, callback}: PositionCaptchaProps) => {
     const [completed, setCompleted] = React.useState<boolean>(false);
     const [error, setError] = React.useState<string>("");
-    const router = useRouter();
     useEffect(() => {
         if (completed) {
             axios.post(`/api/positions/${data.identifier}/link`, {
@@ -20,10 +20,8 @@ const PositionCaptcha = ({data}: PositionCaptchaProps) => {
                 const { data } = res;
                 const link = data.link as string;
                 const embed = data.embedPage as boolean;
-                if (embed) {
-                    router.push(`/apply/${data.identifier}`);
-                } else {
-                    router.push(link);
+                if (callback) {
+                    callback(link, embed);
                 }
             }).catch((err) => {
                 console.error(err);

@@ -77,7 +77,13 @@ const ViewPositionPage = (
                                                     title: "Please solve the captcha",
                                                     body: (
                                                         <>
-                                                            <PositionCaptcha data={props.data} />
+                                                            <PositionCaptcha data={props.data} callback={(link, embed) => {
+                                                                if (embed) {
+                                                                    router.push(`/apply/${props.data.identifier}`);
+                                                                } else {
+                                                                    router.push(link);
+                                                                }
+                                                            }} />
                                                         </>
                                                     ),
                                                     footer: (
