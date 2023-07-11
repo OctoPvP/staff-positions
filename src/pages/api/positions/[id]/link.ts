@@ -24,6 +24,3 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     });
 }
 export default withCaptcha(withMethods(handler, "POST")); // post because withCaptcha only works with post
-export const config = {
-    runtime: "edge"
-}

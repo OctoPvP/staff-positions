@@ -7,6 +7,4 @@ export default async function handler(
 ){
     res.status(200).json(await getAllListedPositions())
 }
-export const config = {
-    runtime: "edge"
-}
+
