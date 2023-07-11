@@ -67,35 +67,39 @@ const ViewPositionPage = (
                                 </p>
                                 <div className="flex flex-col w-full text-center">
                                     <LinkWrapper href={props.data.link} data={props.data}>
-                                        <Button color="primary" className={"w-full"} onPress={() => {
+                                        <CustomButton color="primary" className={"w-full"} onClickLoading={(e) => {
                                             if (props.data.captcha) {
                                                 if (props.data.embedPage) { // embed page will handle captcha
                                                     router.push(`/apply/${props.data.identifier}`);
-                                                    return;
+                                                    return new Promise(() => {});
                                                 }
-                                                showModal({
-                                                    title: "Please solve the captcha",
-                                                    body: (
-                                                        <>
-                                                            <PositionCaptcha data={props.data} callback={(link, embed) => {
-                                                                if (embed) {
-                                                                    router.push(`/apply/${props.data.identifier}`);
-                                                                } else {
-                                                                    router.push(link);
-                                                                }
-                                                            }} />
-                                                        </>
-                                                    ),
-                                                    footer: (
-                                                        <>
+                                                return new Promise<void>((resolve, reject) => {
+                                                    showModal({
+                                                        title: "Please solve the captcha",
+                                                        body: (
+                                                            <>
+                                                                <PositionCaptcha data={props.data} callback={(link, embed) => {
+                                                                    resolve();
+                                                                    if (embed) {
+                                                                        router.push(`/apply/${props.data.identifier}`);
+                                                                    } else {
+                                                                        router.push(link);
+                                                                    }
+                                                                }} />
+                                                            </>
+                                                        ),
+                                                        footer: (
+                                                            <>
 
-                                                        </>
-                                                    ),
-                                                });
+                                                            </>
+                                                        ),
+                                                    });
+                                                })
                                             }
+                                            return new Promise(() => {});
                                         }}>
                                             Apply <FaArrowRight/>
-                                        </Button>
+                                        </CustomButton>
                                     </LinkWrapper>
                                 </div>
                             </CardBody>
