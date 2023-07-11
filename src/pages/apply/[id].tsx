@@ -8,8 +8,6 @@ import {useRouter} from "next/router";
 const ViewFormPage = (
     props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) => {
-    const router = useRouter();
-
     const [embedLink, setEmbedLink] = React.useState<string>("");
     return (
         <div className="min-h-screen flex flex-col justify-center items-center">

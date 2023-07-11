@@ -8,7 +8,6 @@ import ClientSide from "@/components/client-side";
 
 export default function Home() {
     const {data, error, isLoading} = useSWR('/api/positions/')
-    const router = useRouter();
     return (
         <>
             <section id={"home"}>
