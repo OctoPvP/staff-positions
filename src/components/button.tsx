@@ -2,8 +2,8 @@ import React, {useEffect} from 'react';
 import {Button as NextUIButton, ButtonProps} from "@nextui-org/react";
 import {PressEvent} from "@react-types/shared";
 import {useDynamicModal} from "@/components/dynamic-modal";
-import {FaCheck} from "react-icons/fa6";
-const CustomButton = ({ modalOnError = true, showSuccessColor = true, ...props }: {
+import {FaCheck, FaX} from "react-icons/fa6";
+const CustomButton = ({ modalOnError = true, showStatusColor = true, ...props }: {
     onClickLoading?: (
         e: PressEvent
     ) => Promise<any>;
@@ -15,12 +15,12 @@ const CustomButton = ({ modalOnError = true, showSuccessColor = true, ...props }
     ) => void;
     toggle?: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
     modalOnError?: boolean;
-    showSuccessColor?: boolean;
+    showStatusColor?: boolean;
     closeModal?: () => void;
 } & React.ComponentProps<typeof NextUIButton>) => {
     const { showModal, closeModal } = useDynamicModal();
     const [loading, setLoading] = React.useState(false);
-    const [successAnimation, setSuccessAnimation] = React.useState(false);
+    const [statusIcon, setStatusIcon] = React.useState<React.ReactNode | null>(null);
     const [btnColor, setBtnColor] = React.useState<ButtonProps["color"] | undefined>(props.color);
     useEffect(() => {
         setBtnColor(props.color)
@@ -36,7 +36,9 @@ const CustomButton = ({ modalOnError = true, showSuccessColor = true, ...props }
                     setLoading(true);
                     const promise = props.onClickLoading(e)
                     if (promise) {
+                        let error = false;
                         promise.catch((e: any) => {
+                            error = true;
                             if (e.response) {
                                 // if there is res.data.message, show it
                                 if (e.response.data.message) {
@@ -56,13 +58,13 @@ const CustomButton = ({ modalOnError = true, showSuccessColor = true, ...props }
                             }
                         }).finally(() => {
                             setLoading(false);
-                            if (showSuccessColor) {
+                            if (showStatusColor) {
                                 const originalColor = props.color;
-                                setBtnColor("success");
-                                setSuccessAnimation(true)
+                                setBtnColor(error ? "danger" : "success");
+                                setStatusIcon(error ? <FaX /> : <FaCheck />)
                                 setTimeout(() => {
                                     setBtnColor(originalColor);
-                                    setSuccessAnimation(false);
+                                    setStatusIcon(null);
                                     if (props.closeModal) {
                                         props.closeModal();
                                     }
@@ -80,7 +82,7 @@ const CustomButton = ({ modalOnError = true, showSuccessColor = true, ...props }
                     props.toggle[1](!props.toggle[0]);
                 }
             }} isLoading={loading} {...propsCopy}>
-                {successAnimation && <FaCheck />}{props.children}
+                {statusIcon}{props.children}
             </NextUIButton>
         </>
     );

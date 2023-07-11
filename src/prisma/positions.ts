@@ -15,13 +15,29 @@ export const getPositionByIdentifier = async (identifier: string) => {
         }
     });
 }
+export const getAccessablePositionByIdentifier = async (identifier: string) => {
+    // find one where hidden is false and identifier is identifier
+    return prisma.position.findFirst({
+        where: {
+            hidden: false,
+            identifier,
+        }
+    });
+}
 
 export const getAllListedPositions = async () => {
-    return prisma.position.findMany({
+    const data = await prisma.position.findMany({
         where: {unlisted: false, hidden: false},
         orderBy: {
             priority: 'desc'
         }
+    });
+    // if data.captcha is true, then set link to empty
+    return data.map(position => {
+        if (position.captcha) {
+            position.link = "";
+        }
+        return position;
     });
 }
 export const createPosition = async (data: (Prisma.Without<Prisma.PositionCreateInput, Prisma.PositionUncheckedCreateInput> & Prisma.PositionUncheckedCreateInput) | (Prisma.Without<Prisma.PositionUncheckedCreateInput, Prisma.PositionCreateInput> & Prisma.PositionCreateInput)) => {

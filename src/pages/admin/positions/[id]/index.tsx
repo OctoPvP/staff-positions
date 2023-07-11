@@ -6,8 +6,6 @@ import {Card, CardBody} from "@nextui-org/card";
 import MarkdownEditor from "@/components/admin/markdown-editor";
 import CustomButton from "@/components/button";
 import axios from "axios";
-import {MDXRemote} from "next-mdx-remote";
-import mdxComponents from "@/util/markdown";
 import {Input} from "@nextui-org/input";
 import {useRouter} from "next/router";
 import {Position} from "@prisma/client";
@@ -19,14 +17,23 @@ const EditPositionPage = (
     const router = useRouter();
     const [description, setDescription] = React.useState(position?.description);
     const [unlisted, setUnlisted] = React.useState(position?.unlisted);
+    const [embedPage, setEmbedPage] = React.useState(position?.embedPage);
+    const [captcha, setCaptcha] = React.useState(position?.captcha);
     const [hidden, setHidden] = React.useState(position?.hidden);
-    const SettingCard = ({title, position, fieldName, callback = null, inputType = "text"}: { title: string, position: Position, fieldName: string, callback?: ((result: any) => void) | null, inputType?: HTMLInputTypeAttribute | undefined}) => {
+    const SettingCard = ({title, position, fieldName, callback = null, inputType = "text"}: {
+        title: string,
+        position: Position,
+        fieldName: string,
+        callback?: ((result: any) => void) | null,
+        inputType?: HTMLInputTypeAttribute | undefined
+    }) => {
         const inputRef = React.useRef<HTMLInputElement>(null);
         return (
             <Card className="col-span-2 m-6 md:mr-3 sm:mb-3 h-fit">
                 <CardBody>
                     <h1 className="text-2xl font-bold text-center pb-2">{title}</h1>
-                    <Input type={inputType} label={title} placeholder={(position as any)[fieldName]} defaultValue={(position as any)[fieldName].toString()} ref={inputRef}/>
+                    <Input type={inputType} label={title} placeholder={(position as any)[fieldName]}
+                           defaultValue={(position as any)[fieldName].toString()} ref={inputRef}/>
                     <CustomButton color={"primary"} className={"w-full mt-4"} onClickLoading={() => {
                         let newField: any = inputRef.current?.value;
                         if (inputType === "number") {
@@ -61,11 +68,37 @@ const EditPositionPage = (
                 </CardBody>
             </Card>
             <div className={"grid grid-cols-1 md:grid-cols-8"}>
-                <SettingCard title={"Identifier"} position={position} fieldName={"identifier"} callback={(result) => {router.push(`/admin/positions/${result}`);}}/>
-                <SettingCard title={"Title"} position={position} fieldName={"title"} />
-                <SettingCard title={"Short Description"} position={position} fieldName={"shortDescription"} />
-                <SettingCard title={"Link"} position={position} fieldName={"link"} inputType={"url"} />
-                <SettingCard title={"Order Priority"} position={position} fieldName={"priority"} inputType={"number"} />
+                <SettingCard title={"Identifier"} position={position} fieldName={"identifier"} callback={(result) => {
+                    router.push(`/admin/positions/${result}`);
+                }}/>
+                <SettingCard title={"Title"} position={position} fieldName={"title"}/>
+                <SettingCard title={"Short Description"} position={position} fieldName={"shortDescription"}/>
+                <SettingCard title={"Link"} position={position} fieldName={"link"} inputType={"url"}/>
+                <SettingCard title={"Order Priority"} position={position} fieldName={"priority"} inputType={"number"}/>
+                <Card className="col-span-2 m-6 md:mr-3 sm:mb-3 h-fit">
+                    <CardBody>
+                        <h1 className="text-2xl font-bold text-center pb-2">{embedPage ? "Page Embedded" : "Redirect"}</h1>
+                        <CustomButton color={"primary"} className={"w-full mt-4"} onClickLoading={() => {
+                            return axios.post(`/api/admin/positions/${position.identifier}/update/embedPage`, {
+                                embedPage: !embedPage,
+                            }).then(() => {
+                                setEmbedPage(!embedPage);
+                            });
+                        }}>{embedPage ? "Set Redirect" : "Set Embedded"}</CustomButton>
+                    </CardBody>
+                </Card>
+                <Card className="col-span-2 m-6 md:mr-3 sm:mb-3 h-fit">
+                    <CardBody>
+                        <h1 className="text-2xl font-bold text-center pb-2">{captcha ? "Captcha Enabled" : "Captcha Disabled"}</h1>
+                        <CustomButton color={"primary"} className={"w-full mt-4"} onClickLoading={() => {
+                            return axios.post(`/api/admin/positions/${position.identifier}/update/captcha`, {
+                                captcha: !captcha,
+                            }).then(() => {
+                                setCaptcha(!captcha);
+                            });
+                        }}>{captcha ? "Disable" : "Enable"}</CustomButton>
+                    </CardBody>
+                </Card>
                 <Card className="col-span-2 m-6 md:mr-3 sm:mb-3 h-fit">
                     <CardBody>
                         <h1 className="text-2xl font-bold text-center pb-2">{unlisted ? "Unlisted" : "Listed"}</h1>

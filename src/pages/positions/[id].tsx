@@ -9,10 +9,38 @@ import remarkGfm from "remark-gfm";
 import {Card, CardBody} from "@nextui-org/card";
 import {Button, Link} from "@nextui-org/react";
 import {FaArrowRight} from "react-icons/fa6";
+import {Position} from "@prisma/client";
+import {getSiteKey} from "@/util/captcha";
+import {useDynamicModal} from "@/components/dynamic-modal";
+import {Button as NextUIButton} from "@nextui-org/button";
+import CustomButton from "@/components/button";
+import axios from "axios/index";
+import {mutate} from "swr";
+import CaptchaWidget from "@/components/captcha";
+import PositionCaptcha from "@/components/position-captcha";
+import {useRouter} from "next/router";
 
 const ViewPositionPage = (
     props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) => {
+    const { showModal, closeModal } = useDynamicModal();
+    const router = useRouter();
+    const LinkWrapper = ({href, children, data}: { href: string; children: any; data: Position }) => {
+        if (!data.captcha) {
+            return (
+                <Link href={data.embedPage ? `/apply/${data.identifier}` : href} className={"outline-0"}>
+                    {children}
+                </Link>
+            )
+        }
+        return (
+            <>
+                <div className={"outline-0 w-full max-w-full"}>
+                    {children}
+                </div>
+            </>
+        );
+    }
     return (
         <div className={"pt-20"}>
             <div className={false ? "border-b-2 pb-4 border-gray-500" : "pb-4"}>
@@ -38,11 +66,31 @@ const ViewPositionPage = (
                                     Ready to apply? Click the button below to get started.
                                 </p>
                                 <div className="flex flex-col w-full text-center">
-                                    <Link href={props.data.link} className={"outline-0"}>
-                                        <Button color="primary" className="w-full mx-4">
+                                    <LinkWrapper href={props.data.link} data={props.data}>
+                                        <Button color="primary" className={"w-full"} onPress={() => {
+                                            if (props.data.captcha) {
+                                                if (props.data.embedPage) { // embed page will handle captcha
+                                                    router.push(`/apply/${props.data.identifier}`);
+                                                    return;
+                                                }
+                                                showModal({
+                                                    title: "Please solve the captcha",
+                                                    body: (
+                                                        <>
+                                                            <PositionCaptcha data={props.data} />
+                                                        </>
+                                                    ),
+                                                    footer: (
+                                                        <>
+
+                                                        </>
+                                                    ),
+                                                });
+                                            }
+                                        }}>
                                             Apply <FaArrowRight/>
                                         </Button>
-                                    </Link>
+                                    </LinkWrapper>
                                 </div>
                             </CardBody>
                         </Card>
@@ -74,10 +122,18 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         console.error(e);
         serializedDesc = null;
     }
+    let otherData = null;
+    if (data.captcha) {
+        data.link = "";
+        otherData = {
+            siteKey: await getSiteKey()
+        }
+    } else otherData = {}
     return {
         props: {
             data,
             serializedDesc,
+            ...otherData
         },
     };
 }
