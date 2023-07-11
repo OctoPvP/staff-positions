@@ -54,3 +54,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         },
     };
 }
+export const runtime = "edge";

@@ -11,3 +11,6 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 export default handler;
+export const config = {
+    runtime: "edge"
+}

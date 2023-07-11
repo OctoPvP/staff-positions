@@ -12,3 +12,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 }
 export default withMethods(handler, "DELETE");
+export const config = {
+    runtime: "edge"
+}

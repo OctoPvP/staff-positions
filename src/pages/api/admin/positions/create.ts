@@ -40,3 +40,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 }
 export default withMethods(handler, "POST");
+export const config = {
+    runtime: "edge"
+}
