@@ -45,4 +45,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         props: {},
     };
 }
-export const runtime = "edge";
+export const runtime = "experimental-edge";
