@@ -16,8 +16,8 @@ export function nextAuth(
                 clientSecret: process.env.AUTHENTIK_CLIENT_SECRET || "",
                 issuer: process.env.AUTHENTIK_ISSUER,
                 client: {
-                    authorization_signed_response_alg: 'HS256',
-                    id_token_signed_response_alg: 'HS256'
+                    authorization_signed_response_alg: 'RS256',
+                    id_token_signed_response_alg: 'RS256'
                 }
             })
         ],
