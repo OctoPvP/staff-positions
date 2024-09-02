@@ -22,7 +22,7 @@
     "axios": "^1.7.2",
     "eslint": "8.44.0",
     "eslint-config-next": "14.2.5",
-    "framer-motion": "^10.12.18",
+    "framer-motion": "^11.3.31",
     "next": "14.2.5",
     "next-auth": "^4.24.5",
     "next-mdx-remote": "^5.0.0",
